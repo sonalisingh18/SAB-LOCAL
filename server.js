@@ -13,8 +13,6 @@ const mongoose = require('mongoose');
 /* Adding path */
 const path = require('path');
 
-let urlencodedParser = bodyParser.urlencoded({ extended: false });
-
 /* Setting Templating engine */
 app.set('view engine' , 'ejs');
 
