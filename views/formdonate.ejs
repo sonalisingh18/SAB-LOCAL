@@ -15,6 +15,7 @@
             <div class="wrap-contact2">
                 <form class="contact2-form validate-form" method="POST">
                     <span class="contact2-form-title">DONATION FORM</span>
+                    <%- include("./messages") %>
                     <div class="wrap-input2 validate-input" data-validate="Name is required">
                         <input class="input2" type="text" name="donorname">
                         <span class="focus-input2" data-placeholder="DONOR'S NAME"></span>
@@ -26,6 +27,14 @@
                     <div class="wrap-input2 validate-input" data-validate="Name is required">
                         <input class="input2" type="text" name="shopname">
                         <span class="focus-input2" data-placeholder="SHOP NAME"></span>
+                    </div>
+                    <div class="wrap-input2 validate-input" data-validate="Pincode is required">
+                        <input class="input2" type="text" name="pincode">
+                        <span class="focus-input2" data-placeholder="PINCODE FOR SHOP"></span>
+                    </div>
+                    <div class="wrap-input2 validate-input" data-validate="Area is required">
+                        <input class="input2" type="text" name="area">
+                        <span class="focus-input2" data-placeholder="AREA OF SHOP"></span>
                     </div>
                     <div class="wrap-input2 validate-input" data-validate="Donaton amount is required">
                         <input class="input2" type="number" name="amount">
