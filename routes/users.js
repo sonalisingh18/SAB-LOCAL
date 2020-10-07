@@ -10,7 +10,7 @@ const Shopowner = require('../models/Shopowner');
 const Donation = require('../models/Donation');
 
 // Index page
-router.get('/' , (req , res) => res.render('index'));
+router.get('/' , (req , res) => res.render('index' , {user: req.user}));
 
 // Register Page
 router.get('/formregister', (req, res) => res.render('formregister'));
@@ -128,6 +128,17 @@ router.post('/formlogin', (req, res, next) => {
       failureRedirect: '/formlogin',
       failureFlash: true
     })(req, res, next);
+});
+
+
+/***************************** User Logout *****************************/
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash(
+        'error',
+        'You are logged out'
+      );
+    res.redirect('/');
 });
 
 
