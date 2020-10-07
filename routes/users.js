@@ -161,7 +161,7 @@ router.post('/formaddshop',ensureAuthenticated, (req, res) =>{
     }
     else if(pincode.length != 6) 
     {
-        errors.push({msg: "Pincode is not valid"});
+        errors.push({msg: "Please enter valid Pincode"});
     }
     if (errors.length > 0) {
         res.render('formaddshop', {
@@ -288,5 +288,74 @@ router.post('/formdonate', (req, res) => {
         });
     }
 });
+
+
+/***************************** Filter Pincode *****************************/
+router.post('/filterpincode',function(req,res)
+{
+    const pincode = req.body.pincode;
+    //console.log(req.body.pincode);
+
+    let errors=[];
+
+    // Check required field
+    if (!pincode)
+    {
+        errors.push({ msg: 'Please enter pincode' });
+    }
+
+    else if(pincode.length != 6) 
+    {
+        errors.push({msg: "Please enter a valid pincode"});
+    }
+
+    if (errors.length > 0) {
+        res.render('index', {
+            errors,
+            pincode,
+        });
+    }
+    else{
+        Shopowner.find({pincode:req.body.pincode},function(err,data)
+        {
+            if(err)
+            {
+                errors.push({ msg: 'Not able to process the Pincode you entered' });
+                res.render('index', {
+                    errors,
+                    pincode,
+                });
+                process.exit(1);
+            }
+            //console.log(data.length);
+            let set=new Set();
+            for(let i=0;i<data.length;i++)
+            {
+                set.add(data[i].area);
+            }
+            let pcode={
+                pc:req.body.pincode
+            };
+            let val=Array.from(set);
+            val.sort();
+            //console.log(val.length);
+            if(data.length==0)
+            {
+                //console.log(val);
+                //console.log('11');
+                errors.push({ msg: 'No Shop is registered for this pincode.' });
+                res.render('index', {
+                    errors,
+                    pincode,
+                    val:val,
+                    pcode:pcode,
+                    user:req.user
+                });
+            }
+            res.render('index-1',{val:val,pcode:pcode,user:req.user});
+      })
+    }
+});
+
 
 module.exports = router;

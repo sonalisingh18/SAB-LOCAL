@@ -5,10 +5,10 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"> 
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"> 
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
         <link rel="stylesheet" href="https://bootswatch.com/4/journal/bootstrap.min.css"/>
 	</head>
@@ -23,7 +23,7 @@
 					<a href="#addshop">Add Shop</a>
 					<a href="#shopnow">Shop Now</a>
 					<a href="#donate">Donate</a>
-					<a href="#contactus">Contact Us</a> 
+					<a href="#contactus">Contact Us</a>
 					<% if (typeof user != 'undefined' ) { %>
 						<button class="button special">
 							<% if (user.addShop) { %>
@@ -40,25 +40,8 @@
 				</nav>
 			</div>
 		</header>
-        <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-		<% if(success != ''){ %>
-			<div class="alert alert-success alert-dismissible fade show" role="alert">
-				<%= success %>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-		<% } %>
-		<% if(error != ''){ %>
-			<div class="alert alert-danger alert-dismissible fade show" role="alert">
-				<%= error %>
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-		<% } %>
+		<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
 
-		<!-- Banner -->
 		<section id="banner">
 			<div class="inner">
 				<h1>सब local: <span>Support And Benefit from Local</span></h1>
@@ -124,7 +107,7 @@
 			</div>
 		</section>
 
-        <!-- about -->
+		<!-- about -->
 		<section id="about">
 			<div class="inner">
 				<header>
@@ -138,8 +121,8 @@
 				<p><ul><span class="fa fa-hand-o-right"></span> <b>Advertise your product/service/offer:</b> सब LOCAL provides a column where business owners can share a post advertising their products, services, offers.</ul></p>
 			</div>
 		</section>
-		
-		<!-- addshop -->
+
+        <!-- addshop -->
 		<section id="addshop">
 			<div class="inner">
 				<article>
@@ -191,25 +174,22 @@
 			</div>
 		</section>
 
-		<!-- shopnow -->
+        <!-- shopnow -->
 		<section id="shopnow">
-			<% if(typeof errors != 'undefined') { %>
-				<% errors.forEach(function(error) { %>
-					<div class="alert alert-warning alert-dismissible fade show" role="alert">
-						<%= error.msg %>
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				<% }); %>
-			<% } %>
 			<div class="inner">
 				<header>
 					<h2>SHOP NOW/SEARCH SHOP<br></h2><br>
-					<form method="POST" class="form-inline active-cyan-4" action="/filterpincode#shopnow">
-						<input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Press Enter after entering Pin-code" aria-label="Search" name="pincode">
-						<i class="fas fa-search" aria-hidden="true"></i>
-					</form>shopnow
+					<form action="/filterarea" method="post">
+						<select  name="area">
+							<option value="" disabled selected>Choose area under this Pincode</option>
+							<%for(let i=0; i<val.length; i++){%>
+								<option value="<%=val[i]%>"><%=val[i]%></option>
+							<%}%>
+						</select>
+						<br>
+						<input type="hidden" name="pincode" value="<%=pcode.pc%>">
+						<input type="submit" name="click" value="Submit">
+					</form>
 				</header>
 				<p>Customer can open the account of any shop which are registered on the website, there he/she can find the current number of customers which are lined up and are yet to visit the shop to buy their required commodities, and the expected time for his/her turn.</p>
 				<p>To book a slot at any shop customer will be required to register through his/her phone number and he/she will be provided with a token number.</p>
