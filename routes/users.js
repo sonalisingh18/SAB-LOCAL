@@ -290,7 +290,7 @@ router.post('/formdonate', (req, res) => {
 });
 
 
-/***************************** Filter Pincode *****************************/
+/***************************** Pincode Filter *****************************/
 router.post('/filterpincode',function(req,res)
 {
     const pincode = req.body.pincode;
@@ -298,15 +298,14 @@ router.post('/filterpincode',function(req,res)
 
     let errors=[];
 
-    // Check required field
     if (!pincode)
     {
-        errors.push({ msg: 'Please enter pincode' });
+        errors.push({ msg: 'Please enter Pincode' });
     }
 
     else if(pincode.length != 6) 
     {
-        errors.push({msg: "Please enter a valid pincode"});
+        errors.push({msg: "Please enter a valid Pincode"});
     }
 
     if (errors.length > 0) {
@@ -342,7 +341,6 @@ router.post('/filterpincode',function(req,res)
             if(data.length==0)
             {
                 //console.log(val);
-                //console.log('11');
                 errors.push({ msg: 'No Shop is registered for this pincode.' });
                 res.render('index', {
                     errors,
@@ -352,10 +350,27 @@ router.post('/filterpincode',function(req,res)
                     user:req.user
                 });
             }
-            res.render('index-1',{val:val,pcode:pcode,user:req.user});
-      })
+            else{
+                res.render('index-1',{val:val,pcode:pcode,user:req.user});
+            }
+        })
     }
 });
+
+
+/***************************** Area Filter *****************************/
+router.post('/filterarea',function(req,res)
+{
+    Shopowner.find({pincode:req.body.pincode,area:req.body.area},function(err,data)
+    {
+        if(err)
+        {
+            process.exit(1);
+        }
+        res.render('shopslist',{data:data,user:req.user});
+    })
+});
+
 
 
 module.exports = router;
