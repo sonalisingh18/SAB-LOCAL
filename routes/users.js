@@ -9,6 +9,11 @@ const User = require('../models/User');
 const Shopowner = require('../models/Shopowner');
 const Donation = require('../models/Donation');
 
+
+const bodyParser = require('body-parser');
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
+const fast2sms = require('fast-two-sms');
+
 // Index page
 router.get('/' , (req , res) => res.render('index' , {user: req.user}));
 
@@ -385,6 +390,76 @@ router.post('/filtershop',function(req,res)
       })
 });
 
+
+/***************************** Add Customer in Queue *****************************/
+router.post('/addqueuepage',urlencodedParser, ensureAuthenticated , function(req,res)
+{
+    let phoneNumbers = req.body.phonenumber;
+    let items= req.body.listofitems;
+    let errors=[];
+    if (!phoneNumbers)
+    {
+        errors.push({ msg: 'Please fill in your mobile number' });
+    }
+    else if(phoneNumbers.length !=10)
+    {
+        errors.push({ msg: 'Please fill valid mobile number' });
+    }
+    for(var i=0;i<phoneNumbers.length;i++)
+    {
+        if(phoneNumbers[i]<'0' || phoneNumbers[i]>'9')
+        {
+            errors.push({ msg: 'Please fill valid phone number' });
+            break;
+        }
+    }
+    if (errors.length > 0) {
+        Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
+        {
+            res.render('shopsearch',{   
+                data:data,
+                errors,
+                user:req.user});
+        });
+    }
+    else{
+        Shopowner.findOneAndUpdate({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},
+        {
+            $push: {phoneNumbers:req.body.phonenumber,items:req.body.listofitems}
+        },
+        function(err, docs)
+        {
+            if(err)
+            {
+                res.json(err);
+            }
+            else
+            {
+                Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
+                {
+                    try {
+                        if(data[0].items.length == 1) {
+                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. It's your turn. You can leave for the shop now. In case you are not able to reach the shop within 7 minutes from the time of receiving this message, your registration will be cancelled. Regards, Team 5-&-dime` , numbers: [req.body.phonenumber]});
+                        }
+                        else if(data[0].items.length == 2) {
+                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. You can leave for the shop 7 minutes later from the time of receiveing this message. In case you are not able to reach the shop within 14 minutes, your registration will be cancelled. Regards, Team 5-&-dime` , numbers: [req.body.phonenumber]});
+                        }
+                        else {
+                            var exptime = (data[0].items.length - 1) * 7;
+                            //console.log(exptime);
+                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your expected time is ${exptime} minutes from now. You will be notified once again about the exact time. Regards, Team 5-&-dime` , numbers: [req.body.phonenumber]});
+                        }
+                        res.render('shopsearch',{data:data,user:req.user});
+                    }
+                    catch(err) {
+                        console.log(err);
+                        process.exit(1);
+                    }
+                })
+            }
+        });
+    }
+});
 
 
 module.exports = router;

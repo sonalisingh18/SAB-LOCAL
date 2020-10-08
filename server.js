@@ -16,6 +16,9 @@ const passport = require('passport');
 /* Including flash for message display */
 const flash = require('connect-flash');
 
+/* Including fast2sms for sending sms */
+const fast2sms = require('fast-two-sms');
+
 /* Including express sessions */
 const session = require('express-session');
 
@@ -27,6 +30,10 @@ app.set('view engine' , 'ejs');
 
 /* Passport Config */
 require('./config/passport')(passport);
+
+
+let urlencodedParser = bodyParser.urlencoded({ extended: false });
+
 
 /* Database config */
 require('dotenv').config();
