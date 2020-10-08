@@ -31,9 +31,8 @@ app.set('view engine' , 'ejs');
 /* Passport Config */
 require('./config/passport')(passport);
 
-
+/* Firing urlpareser */
 let urlencodedParser = bodyParser.urlencoded({ extended: false });
-
 
 /* Database config */
 require('dotenv').config();
@@ -73,11 +72,9 @@ app.use(function(req, res, next) {
 /* Access to static files */
 app.use(express.static(path.join(__dirname + '/public')));
 
-
-
-
 /* Routes */
 app.use('/', require('./routes/users.js'));
+
 
 const port = process.env.PORT || 3000;
 
