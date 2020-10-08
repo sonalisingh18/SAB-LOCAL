@@ -372,5 +372,19 @@ router.post('/filterarea',function(req,res)
 });
 
 
+/***************************** Shop Filter *****************************/
+router.post('/finalfilter',function(req,res)
+{
+    Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
+    {
+        if(err)
+        {
+            process.exit(1);
+        }
+        res.render('shopsearch',{data:data,user:req.user});
+      })
+});
+
+
 
 module.exports = router;
