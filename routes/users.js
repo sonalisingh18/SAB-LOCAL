@@ -373,7 +373,7 @@ router.post('/filterarea',function(req,res)
 
 
 /***************************** Shop Filter *****************************/
-router.post('/finalfilter',function(req,res)
+router.post('/filtershop',function(req,res)
 {
     Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
     {
