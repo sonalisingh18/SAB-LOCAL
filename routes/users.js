@@ -420,8 +420,7 @@ router.post('/addqueuepage',urlencodedParser, ensureAuthenticated , function(req
             res.render('shopsearch',{   
                 data:data,
                 errors,
-                user:req.user
-            });
+                user:req.user});
         });
     }
     else{
@@ -439,23 +438,24 @@ router.post('/addqueuepage',urlencodedParser, ensureAuthenticated , function(req
             {
                 Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
                 {
+                    var pos = (data[0].items.length);
                     try{
                         if(data[0].items.length == 1) {
-                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your position in the queue is ${data[0].items.length}. You should reach the shop within 7 minutes else your registration will be cancelled.
-                            Regards 
-                            सब local` , numbers: [req.body.phonenumber]});
+                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your position in the queue is ${pos}. You should reach the shop within 7 minutes else your registration will be cancelled. 
+Regards
+SAB LOCAL` , numbers: [req.body.phonenumber]});
                         }
                         else if(data[0].items.length == 2) {
-                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your position in the queue is ${data[0].items.length}. You should reach the shop within 7-14 minutes from now else your registration will be cancelled.
-                            Regards
-                            सब local` , numbers: [req.body.phonenumber]});
+                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your position in the queue is ${pos}. You should reach the shop within 7-14 minutes from now else your registration will be cancelled. 
+Regards
+SAB LOCAL` , numbers: [req.body.phonenumber]});
                         }
                         else {
                             var exptime = (data[0].items.length - 1) * 7;
                             //console.log(exptime);
-                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your position in the queue is ${data[0].items.length}. Your expected time is ${exptime} minutes from now. You will be notified once again about the exact time. 
-                            Regards
-                            सब local` , numbers: [req.body.phonenumber]});
+                            const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `You have been added successfully to the queue at ${data[0].shopname}. Your position in the queue is ${pos}. Your expected time is ${exptime} minutes from now. You will be notified once again about the exact time. 
+Regards
+SAB LOCAL` , numbers: [req.body.phonenumber]});
                         }
                         res.render('shopsearch',{data:data,user:req.user});
                     }
