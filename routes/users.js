@@ -478,4 +478,32 @@ SAB LOCAL` , numbers: [req.body.phonenumber]});
 });
 
 
+/***************************** Edit Shop About *****************************/
+router.post('/editabout',urlencodedParser,function(req,res){
+    let newobj={
+       aboutshop:req.body.newaboutshop
+    };
+    Shopowner.findOneAndUpdate({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},
+    newobj,
+    function(err, docs)
+    {
+        if(err)
+        {
+            res.json(err);
+        }
+        else
+        {
+            Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
+            {
+                if(err)
+                {
+                    process.exit(1);
+                }
+                res.render('myshop',{data:data,user:req.user});
+            })
+        }
+   });
+});
+
+
 module.exports = router;
