@@ -23,7 +23,7 @@
 					<a href="/#addshop">Add Shop</a>
 					<a href="/#shopnow">Shop Now</a>
 					<a href="/#donate">Donate</a>
-					<a href="./filtershop#contactus">Contact Us</a>
+					<a href="./myshop#contactus">Contact Us</a>
 					<% if (typeof user != 'undefined' ) { %>
 						<button class="button special">
 							<% if (user.addShop) { %>
@@ -40,75 +40,64 @@
 				</nav>
 			</div>
 		</header>
-		<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-		<%- include("./messages") %>
+        <a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+        <%- include("./messages") %>
 
         <section id="main">
             <div class="inner">
                 <div class="row mb-5 justify-content-center">
                     <div class="col-md-6 text-center">
                         <header class="major special">
-    					    <h1><%=data[0].shopname%></h1>
-						</header>
-						<p>Live Current customer count: <span><b><%= data[0].items.length %></b></span> </p>
-						<p>Next customer's expected time: <span><b><%= data[0].items.length*7 %> minutes from now</b></span></p>
+    					    <h1>My Shop: <%=data[0].shopname%></h1>
+                            <br>
+                        <h5>Shop Owner's Name: <%=data[0].ownername%></h5>
+                        </header>
                     </div>
                 </div>
-				<!-- <ul class="alt">
-					<li><p>Live Current customer count: <span><%= data[0].items.length %></span> </p></li>
-					<li><p>Next customer's expected time: <span><%= data[0].items.length*7 %> minutes from now</span></p></li>
-					<li></li>
-				</ul> -->
-                <!-- Text -->
-                <section>
-					<h4>Shop Owner's Name: <%= data[0].ownername %></h4>
+				<!-- Text -->	
+				<section>
 					<br>
-					<%if (data[0].donationwant == 'Y' || data[0].donationwant == 'YES') { %>
-						<ul class="alt">
-							<li></li>
-							<p><b>We need Donations!!</b></p>
-							<p><b>We would be very thankful to you if you could offer us some help.</b></p>
-							<li></li>
-						</ul>
-						<ul class="actions">
-							<li><a href="/formdonate" class="button alt">Donate</a></li>
-						</ul>
-					<% } %>
-					<br>
-					<p>About Shop/Offers:</p>
-					<pre><code>
-<%= data[0].aboutshop %>
-					</code></pre>
-				</section>
-                <br><br>
-                <section>
-					<form method="post" action="/addqueuepage">
+					<form action="/editabout" method="POST">
+						<p><b>About Shop & offers:</b></p>
 						<input type="hidden" name="shopname" value="<%=data[0].shopname%>">
-						<input type="hidden" name="pincode" value="<%=data[0].pincode%>">
+					    <input type="hidden" name="pincode" value="<%=data[0].pincode%>">
 						<input type="hidden" name="area" value="<%=data[0].area%>">
-						<div class="row uniform 50%">
-							<div class="6u 12u$(xsmall)">
-								<input type="tel" name="phonenumber" id="demo-name" value="" placeholder="Enter 10 digit mobile number without country code" />
-							</div>
-						</div>
+						<textarea name="newaboutshop" rows="4" ><%=data[0].aboutshop%></textarea>
 						<br>
-						<div class="field">
-							<label for="listofitems">List of items</label>
-							<textarea name="listofitems" id="listofitems" rows="1" placeholder="Add your items"></textarea>
-						</div>
-						<br>
-						<div class="3u 6u(small) 12u$(xsmall)">
-							<ul class="actions vertical">
-								<input(type="hidden", name="_method", value="PUT")>
-								<input id="butt" type="submit" value="Book Your Number">
+						<input type="submit" name="click" value="Save">
+					</form>
+				</section>
+                <br>
+                <ul class="alt">
+                    <!-- <li></li> -->
+                    <p>Live Current customer count: <b><%=data[0].items.length%></b></p>
+                </ul>
+                <section >
+                    <form method="post" action="/reducecount">
+                        <div class="3u 6u(small) 12u$(xsmall)">
+                            <ul class="actions vertical">
+						        <input type="hidden" name="shopname" value="<%=data[0].shopname%>">
+				 				<input type="hidden" name="pincode" value="<%=data[0].pincode%>">
+				 				<input type="hidden" name="area" value="<%=data[0].area%>">
+                                <input id="butt" type="submit" name="clickreduce" value="Reduce Queue Count">
 							</ul>
 						</div>
 					</form>
-				</section>
+					<br>
+					<ul class="alt">
+						<%for(let i=0;i<data[0].items.length;i++){%>
+			                <li><p><%=i+1%>. Customer Phone No: <b><%=data[0].phoneNumbers[i]%></b></p></li>
+							<div class="field">
+								<label for="listofitems">List of items</label>
+								<textarea name="listofitems" id="listofitems" rows="1"><%=data[0].items[i]%></textarea>
+							</div>
+						<%}%>
+					</ul>
+                </section>
             </div>
-		</section>
+        </section>
 
-		<!-- contactus -->
+        <!-- contactus -->
 		<section id="contactus">
 			<div class="inner">
 				<header>
@@ -149,5 +138,5 @@
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-	</body>
+    </body>
 </html>

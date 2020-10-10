@@ -28,6 +28,14 @@ router.get('/formaddshop', ensureAuthenticated, (req, res) => res.render('formad
 // Donation Page
 router.get('/formdonate', (req, res) => res.render('formdonate'));
 
+// Myshop Page
+router.get('/myshop' , ensureAuthenticated , (req , res) => {
+    Shopowner.find({email: req.user.email} , (err , data) => {
+        if(err) throw err;
+        res.render('myshop' , {data: data,user:req.user});
+    });
+});
+
 
 /***************************** User Registration *****************************/
 router.post('/formregister', (req, res) => {

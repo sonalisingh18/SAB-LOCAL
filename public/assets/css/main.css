@@ -10,8 +10,8 @@
 		font-size: 100%;
 		font: inherit;
 		vertical-align: baseline;
+		scroll-behavior: smooth;
 	}
-
 	article, aside, details, figcaption, figure, contactus, header, hgroup, menu, nav, section {
 		display: block;
 	}
@@ -1113,7 +1113,7 @@ border-top-color: #e5474b;
 			display: block;
 			top: 0;
 			left: 0;
-			background-color: #b3b3b3;
+			background-color: #0c0c0c;
 			opacity: 0.25;
 		}
 
