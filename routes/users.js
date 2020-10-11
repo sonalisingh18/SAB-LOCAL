@@ -506,4 +506,37 @@ router.post('/editabout',urlencodedParser,function(req,res){
 });
 
 
+/***************************** Remove Customer from Queue *****************************/
+router.post('/reducecount',urlencodedParser,function(req,res){
+    // console.log(req.body);
+    Shopowner.findOneAndUpdate({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},
+    {
+        $pop: {phoneNumbers:-1,items:-1}
+    },
+    function(err, docs)
+    {
+        if(err)
+        {
+            res.json(err);
+        }
+        else
+        {
+            Shopowner.find({pincode:req.body.pincode,area:req.body.area,shopname:req.body.shopname},function(err,data)
+            {
+                if(err)
+                {
+                    process.exit(1);
+                }
+                if(data[0].items.length > 1) {
+                    const response = fast2sms.sendMessage({authorization: process.env.API_KEY, sender_id: 'SABLCL', message: `This is a reminder message. Your current position in the queue at ${data[0].shopname} is 2. You should reach the shop within 7-14 minutes from now else your registration will be cancelled.
+Regards
+SAB LOCAL` , numbers: [data[0].phoneNumbers[1]]}); 
+                }
+                res.render('myshop',{data:data,user:req.user});
+            })
+        }
+    });
+});
+
+
 module.exports = router;
