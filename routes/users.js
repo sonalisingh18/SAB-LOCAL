@@ -372,14 +372,40 @@ router.post('/filterpincode',function(req,res)
 /***************************** Area Filter *****************************/
 router.post('/filterarea',function(req,res)
 {
-    Shopowner.find({pincode:req.body.pincode,area:req.body.area},function(err,data)
+    let errors =[];
+    if(!req.body.area)
     {
-        if(err)
+        errors.push({ msg: 'Please enter a valid area' });
+        Shopowner.find({pincode:req.body.pincode},function(err,data)
         {
-            process.exit(1);
-        }
-        res.render('shopslist',{data:data,user:req.user});
-    })
+            if(err)
+            {
+                process.exit(1);
+            }
+            let set=new Set();
+            for(let i=0;i<data.length;i++)
+            {
+                set.add(data[i].area);
+            }
+            let pcode={
+                pc:req.body.pincode
+            };
+            let val=Array.from(set);
+            val.sort();
+            res.render('index-1',{errors, val:val,pcode:pcode,user:req.user});
+        })
+    }
+    else
+    {
+        Shopowner.find({pincode:req.body.pincode,area:req.body.area},function(err,data)
+        {
+            if(err)
+            {
+                process.exit(1);
+            }
+            res.render('shopslist',{data:data,user:req.user});
+        })
+    }
 });
 
 
