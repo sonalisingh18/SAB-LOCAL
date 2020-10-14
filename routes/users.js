@@ -12,6 +12,7 @@ const fast2sms = require('fast-two-sms');
 const User = require('../models/User');
 const Shopowner = require('../models/Shopowner');
 const Donation = require('../models/Donation');
+const Contact = require('../models/Contact');
 
 // Index page
 router.get('/' , (req , res) => res.render('index' , {user: req.user}));
@@ -584,8 +585,7 @@ router.post('/contactindex', function(req,res){
             errors,
             username,
             useremail,
-            message,
-            user: req.user
+            message
         });
     }
     else{
