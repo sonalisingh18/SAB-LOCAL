@@ -565,4 +565,47 @@ SAB LOCAL` , numbers: [data[0].phoneNumbers[1]]});
 });
 
 
+/***************************** Contact Us from Index/Index-1 *****************************/
+router.post('/contactindex', function(req,res){
+    
+    const { username, useremail, message } = req.body;
+    //console.log(req.body.username);
+    //console.log(req.body.useremail);
+    //console.log(req.body.message);
+    let errors = [];
+    
+    // Check required fields
+    if(!username || !useremail || !message ){
+        errors.push({msg: 'Please fill in all fields'});
+    }
+    
+    if (errors.length > 0) {
+        res.render('index', {
+            errors,
+            username,
+            useremail,
+            message,
+            user: req.user
+        });
+    }
+    else{
+        const newContact = new Contact({
+            username,
+            useremail,
+            message
+        });
+        //Save Contact
+        newContact.save()
+        .then(contact => {
+            req.flash(
+                'success_msg',
+                'Your message has been sent'
+            );
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+    }
+});
+
+
 module.exports = router;
