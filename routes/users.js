@@ -189,7 +189,7 @@ router.post('/formaddshop',ensureAuthenticated, (req, res) =>{
     }
     else
     {
-        Shopowner.findOne({ shopname:shopname }).then(shopowner =>
+        Shopowner.findOne({ shopname:shopname, pincode:pincode, area:area, shoptype:shoptype }).then(shopowner =>
         {
             if (shopowner)
             {
@@ -573,7 +573,6 @@ router.post('/contactindex', function(req,res){
     //console.log(req.body.username);
     //console.log(req.body.useremail);
     //console.log(req.body.message);
-    let errors = [];
     
     // Check required fields
     if(!username || !useremail || !message ){
@@ -583,17 +582,7 @@ router.post('/contactindex', function(req,res){
             'Please fill in all fields'
         );
         res.redirect('/');
-    }
-    
-    if (errors.length > 0) {
-        res.render('index', {
-            errors,
-            username,
-            useremail,
-            message
-        });
-    }
-    else{
+    }else{
         const newContact = new Contact({
             username,
             useremail,
