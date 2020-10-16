@@ -353,7 +353,7 @@ router.post('/filterpincode',function(req,res)
             if(data.length==0)
             {
                 //console.log(val);
-                errors.push({ msg: 'No Shop is registered for this pincode.' });
+                errors.push({ msg: 'No Shop is registered under this pincode.' });
                 res.render('index', {
                     errors,
                     pincode,
@@ -577,7 +577,12 @@ router.post('/contactindex', function(req,res){
     
     // Check required fields
     if(!username || !useremail || !message ){
-        errors.push({msg: 'Please fill in all fields'});
+        //errors.push({msg: 'Please fill in all fields'});
+        req.flash(
+            'error_cntct',
+            'Please fill in all fields'
+        );
+        res.redirect('/');
     }
     
     if (errors.length > 0) {

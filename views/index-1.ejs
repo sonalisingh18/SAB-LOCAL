@@ -41,7 +41,32 @@
 			</div>
 		</header>
 		<a href="#menu" class="navPanelToggle"><span class="fa fa-bars"></span></a>
-
+		<% if(success != ''){ %>
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<%= success %>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		<% } %>
+		<% if(error != ''){ %>
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<%= error %>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		<% } %>
+		<% if(success_msg != ''){ %>
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<%= success_msg %>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		<% } %>
+	
+		<!-- Banner -->
 		<section id="banner">
 			<div class="inner">
 				<h1>सब local: <span>Support And Benefit from Local</span></h1>
@@ -164,6 +189,16 @@
 
         <!-- shopnow -->
 		<section id="shopnow">
+			<% if(typeof errors != 'undefined') { %>
+				<% errors.forEach(function(error) { %>
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+						<%= error.msg %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<% }); %>
+			<% } %>
 			<div class="inner">
 				<header>
 					<h2>SHOP NOW/SEARCH SHOP<br></h2><br>
@@ -222,11 +257,27 @@
 
 		<!-- contactus -->
 		<section id="contactus">
+			<% if(success_msg != ''){ %>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<%= success_msg %>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<% } %>
+			<% if(error_cntct != ''){ %>
+				<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					<%= error_cntct %>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<% } %>
 			<div class="inner">
 				<header>
 					<h2>CONTACT US<br><br></h2>
 				</header>
-				<form method="post" action="/contact1">
+				<form method="post" action="/contactindex#contactus">
 					<div class="field half first">
 						<label for="username">Name</label>
 						<input type="text" name="username" id="username" />
