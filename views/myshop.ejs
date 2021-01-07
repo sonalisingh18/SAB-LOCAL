@@ -57,14 +57,33 @@
 				<!-- Text -->	
 				<section>
 					<br>
+					<!-- <form action="editdonation" method="POST">
+						<%if (data[0].donationwant == 'Y' || data[0].donationwant == 'YES') { %>
+							<ul class="alt">
+								<li></li>
+								<p>You said you need donation!&emsp;&emsp;<input type="submit" name="click" value="Change"></p>
+								<li></li>
+							</ul>
+						     
+						<% }else{ %>
+                            <ul class="alt">
+								<li></li>
+								<p>You said you dont need donation!&emsp;&emsp;<input type="submit" name="click" value="Change"></p>
+								<li></li>
+							</ul>
+						    <input type="submit" name="click" value="Save">  
+						<% } %>
+						<input type="hidden" name="shopname" value="<%=data[0].shopname%>">
+					    <input type="hidden" name="pincode" value="<%=data[0].pincode%>">
+						<input type="hidden" name="area" value="<%=data[0].area%>">
+					</form> -->
+					<br>
 					<form action="/editabout" method="POST">
-						<p><b>About Shop & offers:</b></p>
+						<p><b>About Shop & offers:</b>&emsp;&emsp;<input type="submit" name="click" value="Save"></p>
 						<input type="hidden" name="shopname" value="<%=data[0].shopname%>">
 					    <input type="hidden" name="pincode" value="<%=data[0].pincode%>">
 						<input type="hidden" name="area" value="<%=data[0].area%>">
 						<textarea name="newaboutshop" rows="4" ><%=data[0].aboutshop%></textarea>
-						<br>
-						<input type="submit" name="click" value="Save">
 					</form>
 				</section>
                 <br>
